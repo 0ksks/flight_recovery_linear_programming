@@ -131,7 +131,8 @@ class MasterProblem:
         self.solved = self.problem.sol_status == 1
         return self.solved
 
-    def get_decision_variables_x(self):
+    @property
+    def decision_variables_x(self):
         if not self.solved:
             print("problem unsolved, return x None")
             return None
@@ -141,7 +142,8 @@ class MasterProblem:
                 x_value[row_idx][col_idx] = self.__x[row_idx][col_idx].varValue
         return x_value
 
-    def get_decision_variables_y(self):
+    @property
+    def decision_variables_y(self):
         if not self.solved:
             print("problem unsolved, return y None")
             return None
@@ -202,7 +204,7 @@ def get_test_param():
 
 
 if __name__ == "__main__":
-    master_problem_test = MasterProblem("test", get_test_param(), True)
+    master_problem_test = MasterProblem("test", get_test_param(), False)
     master_problem_test.solve()
-    for name, constraint in master_problem_test.problem.constraints.items():
-        print(f"pi {name}: {constraint.pi}")
+    print(master_problem_test.decision_variables_x)
+    print(master_problem_test.decision_variables_y)
