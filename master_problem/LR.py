@@ -1,6 +1,6 @@
 from pulp import LpProblem, LpMinimize, LpVariable, lpSum, PULP_CBC_CMD, LpBinary
 import numpy as np
-from object_define import RANDOM_RANGE, SIZE, PARAMETER
+from object_define import SIZE, PARAMETER
 
 
 class MasterProblem:
@@ -8,6 +8,7 @@ class MasterProblem:
         """
         :param problem_name: snake case
         :param parameter: object_define.parameter
+        :param relaxation: whether relax or not
         """
         size = parameter.get_size()
         self.problem = LpProblem(f"minimize_cost_{problem_name}", LpMinimize)
@@ -201,8 +202,7 @@ def get_test_param():
 
 
 if __name__ == "__main__":
-    param = get_test_param()
-    master_problem_test = MasterProblem("test", param)
+    master_problem_test = MasterProblem("test", get_test_param(), True)
     master_problem_test.solve()
     for name, constraint in master_problem_test.problem.constraints.items():
         print(f"pi {name}: {constraint.pi}")
